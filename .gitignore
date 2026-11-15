@@ -1,0 +1,12 @@
+# Node (commitlint and test tooling)
+node_modules/
+
+# The lichess-bot checkout, its virtualenv, the engine binary, PGNs and the
+# token-bearing config that run.sh writes
+.lichess-bot/
+
+# Local secrets (e.g. LICHESS_TOKEN); never committed
+secrets.sh
+.env
+
+.DS_Store

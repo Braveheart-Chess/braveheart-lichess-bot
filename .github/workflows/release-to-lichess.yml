@@ -25,9 +25,9 @@ permissions: {}
 
 jobs:
   release:
-    uses: jwallace145/jwall-engineering-infra/.github/workflows/container-release.yml@v0.30.0
+    uses: jwallace145/jwall-engineering-infra/.github/workflows/container-release.yml@v0.30.1
     with:
-      project: braveheart-lichess-bot
+      project: braveheart-bot
     permissions:
       contents: read
       id-token: write

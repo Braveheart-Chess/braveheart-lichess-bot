@@ -138,7 +138,7 @@ numbers do not.
 instance run by
 [jwall-engineering-infra](https://github.com/jwallace145/jwall-engineering-infra)
 from this repository's [`jwall-engineering-sites.yaml`](jwall-engineering-sites.yaml),
-project `braveheart-lichess-bot` (the tool's
+project `braveheart-bot` (the tool's
 [docs/lichess-bot.md](https://github.com/jwallace145/jwall-engineering-infra/blob/main/docs/lichess-bot.md)).
 This repository owns the deployment: the engine repository has no workflow,
 file or role for the bot.
@@ -167,10 +167,10 @@ A release that changes neither the pin nor the config deploys nothing.
 | Hash size and move overhead | `engine.hash_mb` and `engine.move_overhead_ms` in the project file, which override `config.yml`'s `uci_options` |
 | lichess-bot's own version | jwall-engineering-infra's image, pinned to the same commit as `LICHESS_BOT_REF` in `run.sh` |
 | Instance type, records, logs | The project file. Changing the instance replaces it, so that change also needs a Bot apply in jwall-engineering-infra, run while the bot is idle |
-| Token | SSM `/jwall-engineering/braveheart-lichess-bot/lichess-token`, never in a file |
+| Token | SSM `/jwall-engineering/braveheart-bot/lichess-token`, never in a file |
 
 Every finished game is shipped to
-`s3://jwall-engineering-braveheart-lichess-bot-records/records/`, filed under the
+`s3://jwall-engineering-braveheart-bot-records/records/`, filed under the
 image tag that played it (`engine=v0.54.0-3f9c2a1b`). Games from before the
 bot moved here are in `jwall-engineering-braveheart-records`.
 

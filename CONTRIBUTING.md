@@ -52,4 +52,8 @@ Every change reaches `main` through a pull request. Nobody pushes to `main`.
 
 [Release Please](https://github.com/googleapis/release-please) keeps a release
 pull request open with the next version and the changelog. Merging it tags the
-version. It owns `CHANGELOG.md`; nobody edits that file by hand.
+version; it deploys nothing. It owns `CHANGELOG.md`; nobody edits that file by hand.
+
+The release pull request is authored by the `jwallace145-release-bot` GitHub
+App, so CI runs on it. The workflow reads the app's credentials from the
+repository secrets `RELEASE_BOT_CLIENT_ID` and `RELEASE_BOT_PRIVATE_KEY`.

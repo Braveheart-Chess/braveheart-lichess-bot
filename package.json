@@ -1,0 +1,17 @@
+{
+  "name": "braveheart-lichess-bot",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Tooling for commit message linting and the config tests. The bot itself is lichess-bot and the Braveheart engine; see README.md.",
+  "type": "module",
+  "scripts": {
+    "commitlint": "commitlint"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

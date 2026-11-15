@@ -12,6 +12,8 @@ engine; everything that connects it to Lichess lives here.
 | File | What it is |
 | --- | --- |
 | [`config.yml`](config.yml) | The lichess-bot configuration: challenges accepted, the opening book, pondering, the engine's options, the chat greetings |
+| [`jwall-engineering-sites.yaml`](jwall-engineering-sites.yaml) | The deployed bot: the engine release it plays (the pin), its instance, token, records and logs |
+| [`.github/workflows/release-to-lichess.yml`](.github/workflows/release-to-lichess.yml) | Deploys each release of this repository to the bot |
 | [`run.sh`](run.sh) | Sets up lichess-bot and the engine under `.lichess-bot/` and plays |
 | [`tools/check-config.py`](tools/check-config.py) | What `run.sh --check` runs: lichess-bot's own validation of the config, and the engine's UCI options |
 | [`tests/`](tests) | The chat greetings fit Lichess's message limit (`npm test`) |
@@ -37,8 +39,9 @@ LICHESS_TOKEN=lip_... ./run.sh
 ```
 
 This fetches lichess-bot at the pinned commit (it publishes no release tags),
-installs it into a virtual environment, downloads the latest Braveheart release
-for this machine and verifies its checksum, writes the config, and starts
+installs it into a virtual environment, downloads the Braveheart release the
+deployed bot plays (the pin) for this machine and verifies its checksum, writes
+the config, and starts
 accepting challenges. Leave it running; press Ctrl-C to stop (games in progress
 are resigned by the server after `abort_time`).
 
@@ -60,8 +63,9 @@ binaries, and `run.sh` takes one of them.
 
 | Setting | Engine |
 | --- | --- |
-| none | The latest release, re-checked on every run |
-| `BRAVEHEART_VERSION=v0.54.0` | That release |
+| none | The pinned release, `container-image.artifact.version` in `jwall-engineering-sites.yaml` |
+| `BRAVEHEART_VERSION=v0.55.0` | That release, for example one you are about to pin |
+| `BRAVEHEART_VERSION=latest` | The newest release |
 | `BRAVEHEART_BIN=/path/to/braveheart` | A binary you built, for example `../braveheart/target/release/braveheart` |
 
 Releases exist for Apple silicon and Intel Macs and for x86-64 Linux. The Linux
@@ -129,22 +133,54 @@ numbers do not.
 
 ## The deployed bot
 
-`run.sh` plays only while it is running. The always-on bot is a single EC2
+`run.sh` plays only while it is running. The always-on bot,
+[jwallace145](https://lichess.org/@/jwallace145), is one `c8a.medium` EC2
 instance run by
 [jwall-engineering-infra](https://github.com/jwallace145/jwall-engineering-infra)
-(its [docs/lichess-bot.md](https://github.com/jwallace145/jwall-engineering-infra/blob/main/docs/lichess-bot.md)):
-every published engine release is built into an image and rolled out between
-games.
+from this repository's [`jwall-engineering-sites.yaml`](jwall-engineering-sites.yaml),
+project `braveheart-lichess-bot` (the tool's
+[docs/lichess-bot.md](https://github.com/jwallace145/jwall-engineering-infra/blob/main/docs/lichess-bot.md)).
+This repository owns the deployment: the engine repository has no workflow,
+file or role for the bot.
 
-**That deployment has not moved here yet.** It is still driven from the engine
-repository: its `Release to Lichess` workflow, the `lichess-bot` component of
-its `jwall-engineering-sites.yaml`, and the copy of the config at
-`lichess/config.yml` there, which is the one the deployed bot reads. Until the
-deployment moves (see
-[issue 3](https://github.com/Braveheart-Chess/braveheart-lichess-bot/issues/3)),
-a change to `config.yml` here reaches the deployed bot only once it is also
-made to that copy. The deployed bot's hash size and move overhead are set in
-the project file (`engine.hash_mb`, `engine.move_overhead_ms`), not here.
+**What it plays** is the pin, `container-image.artifact.version`: one release of
+the engine repository, its Linux binary checksum-verified and smoke-tested, never
+rebuilt. A newer engine release changes nothing until the pin moves.
+
+**How a change reaches it:**
+
+1. Merge a pull request that changes the pin or `config.yml`.
+2. Release Please updates its release pull request. Merging that is the
+   deliberate act that deploys.
+3. The release runs `Release to Lichess`. It builds an image from the pinned
+   release and the release's `config.yml`, tags it `<pin>-<8 hex digits of the
+   config's SHA-256>` (for example `v0.54.0-3f9c2a1b`), pushes it to ECR, and
+   rolls the bot to it **after the game in progress ends**. If the new image does
+   not come up, the previous one is restarted.
+
+A release that changes neither the pin nor the config deploys nothing.
+
+| What | Where |
+| --- | --- |
+| Engine release | `container-image.artifact.version` |
+| lichess-bot settings | `config.yml`; the entrypoint fills `__VERSION__` with the pinned release |
+| Hash size and move overhead | `engine.hash_mb` and `engine.move_overhead_ms` in the project file, which override `config.yml`'s `uci_options` |
+| lichess-bot's own version | jwall-engineering-infra's image, pinned to the same commit as `LICHESS_BOT_REF` in `run.sh` |
+| Instance type, records, logs | The project file. Changing the instance replaces it, so that change also needs a Bot apply in jwall-engineering-infra, run while the bot is idle |
+| Token | SSM `/jwall-engineering/braveheart-lichess-bot/lichess-token`, never in a file |
+
+Every finished game is shipped to
+`s3://jwall-engineering-braveheart-lichess-bot-records/records/`, filed under the
+image tag that played it (`engine=v0.54.0-3f9c2a1b`). Games from before the
+bot moved here are in `jwall-engineering-braveheart-records`.
+
+To see what is running, from a shell with the AWS credentials, in a checkout of
+jwall-engineering-infra:
+
+```sh
+JES_SKIP_ROLE_CHECK=1 uv run jwall-engineering-sites --config config.yaml \
+  bot status   # run next to this repository's jwall-engineering-sites.yaml
+```
 
 ## Rating
 

@@ -28,10 +28,14 @@ ones you MUST follow.
 - **Never run the bot with the deployed bot's token.** Exactly one process may
   hold a bot's token; a second one takes its games away. `./run.sh --check`
   needs no token and never contacts Lichess; use it to test changes.
-- **A config change is not deployed by merging it.** Until the deployment moves
-  here ([README](README.md#the-deployed-bot)), the deployed bot reads the engine
-  repository's copy of the config. Say in the PR whether that copy needs the
-  same change.
+- **Merging deploys nothing; a release does.** A change to `config.yml` or the
+  engine pin (`container-image.artifact.version`) reaches the bot when the
+  Release Please PR is merged ([README](README.md#the-deployed-bot)). Never
+  merge that PR yourself unless the owner asks: it changes what the live bot
+  plays. Say in your PR what the bot will do differently.
+- **Pin only a published engine release.** The pin must be a `vX.Y.Z` release
+  of the engine repository with its Linux asset attached; run
+  `BRAVEHEART_VERSION=<tag> ./run.sh --check` first, and quote it in the PR.
 - **Bump the lichess-bot pin deliberately.** `LICHESS_BOT_REF` in `run.sh` is a
   commit of lichess-bot's `master`. When it changes, compare `config.yml` with
   that commit's `config.yml.default` and say what changed in the PR.
@@ -53,6 +57,6 @@ shellcheck run.sh
 ## Things that need the owner
 
 Repository settings and secrets, the release bot, the Lichess account and its
-token, and anything that touches the deployed bot (jwall-engineering-infra's
-Bot apply, its secrets, its instance). List them in the PR instead of
-attempting them.
+token, merging the Release Please PR, and anything else that touches the
+deployed bot (jwall-engineering-infra's Bot apply, its secrets, its instance).
+List them in the PR instead of attempting them.

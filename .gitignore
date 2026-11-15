@@ -10,3 +10,6 @@ secrets.sh
 .env
 
 .DS_Store
+
+# jwall-engineering-sites run logs and artifacts
+.jwall-engineering-sites/

@@ -66,3 +66,43 @@ jobs:
             test
             revert
           requireScope: false
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # The chat greetings fit Lichess's 140-character limit.
+      - run: npm test
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - run: shellcheck run.sh
+
+  bot-check:
+    name: Bot check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      # Sets the bot up exactly as a local run does (lichess-bot at the pinned
+      # commit, the latest engine release, the rendered config), then has
+      # lichess-bot validate the config and checks that the engine advertises
+      # every UCI option the config sets. It never contacts Lichess.
+      - run: ./run.sh --check

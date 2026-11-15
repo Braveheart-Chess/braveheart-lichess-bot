@@ -7,11 +7,39 @@ connects the engine to Lichess belongs here.
 ## Setup
 
 ```sh
-npm ci                                                          # commitlint
+npm ci                                                          # commitlint and the tests
 pre-commit install --hook-type commit-msg --hook-type pre-commit
 ```
 
 The hooks are a convenience. CI is the authoritative check.
+
+## Checks
+
+| CI job | What it runs | Locally |
+| --- | --- | --- |
+| `Commit messages` | commitlint over every commit in `base..head` | `npx commitlint --from origin/main --to HEAD --verbose` |
+| `PR title` | The title is a Conventional Commit | |
+| `Tests` | The chat greetings fit Lichess's 140-character limit | `npm test` |
+| `Lint` | ShellCheck on `run.sh` | `shellcheck run.sh` |
+| `Bot check` | A full setup, lichess-bot's validation of the config, the engine's UCI options | `./run.sh --check` |
+
+`./run.sh --check` needs no token and never contacts Lichess. To try a change
+in a real game, run the bot with the token of a bot account of your own (see
+[README.md](README.md#one-time-setup)), never with the deployed bot's: one
+process may hold a token at a time.
+
+## Changing the config
+
+- `config.yml` follows the layout of lichess-bot's `config.yml.default` at the
+  commit `run.sh` pins (`LICHESS_BOT_REF`). Bump the pin deliberately, and
+  compare the two files when you do.
+- The `greeting` lines must fit 140 characters with a 9-character version in
+  place of `__VERSION__`; `npm test` checks.
+- A UCI option set under `engine.uci_options` must be one the engine
+  advertises; `./run.sh --check` checks against the latest release.
+- Merging a change does not deploy it. Until the deployment moves here, the
+  deployed bot reads the engine repository's copy of the config; see
+  [The deployed bot](README.md#the-deployed-bot).
 
 ## Commit messages
 

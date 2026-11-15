@@ -1,0 +1,33 @@
+name: Release to Lichess
+
+# Deploys every release of this repository to the Lichess bot. The release is
+# cut by Release Please (release-please.yml) when its PR is merged, so merging
+# that PR is the reviewed act that changes what the bot plays.
+#
+# jwall-engineering-infra's container-release.yml builds an image from the
+# engine release pinned in jwall-engineering-sites.yaml (the engine
+# repository's Linux asset, checksum-verified, smoke-tested, never rebuilt)
+# and this release's config.yml, tags it <pin>-<config digest>, pushes it to
+# ECR and rolls the bot to it after the game in progress ends. A release that
+# changes neither the pin nor the config builds and deploys nothing. A red
+# check here means the bot keeps playing the previous image.
+#
+# It runs on the release event, not as a job of release-please.yml, because the
+# release role trusts only this repository's v* tags, and a push to main is
+# not a tag. Re-run a failed run from the Actions tab once the cause is fixed.
+# The infrastructure: https://github.com/jwallace145/jwall-engineering-infra/blob/main/docs/lichess-bot.md
+
+on:
+  release:
+    types: [published]
+
+permissions: {}
+
+jobs:
+  release:
+    uses: jwallace145/jwall-engineering-infra/.github/workflows/container-release.yml@v0.30.0
+    with:
+      project: braveheart-lichess-bot
+    permissions:
+      contents: read
+      id-token: write

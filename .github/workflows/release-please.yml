@@ -2,7 +2,8 @@ name: Release
 
 # Merges to main accumulate changes in a Release Please PR. Merging that PR is
 # the deliberate, human-reviewed act that cuts a version tag and updates
-# CHANGELOG.md. It deploys nothing.
+# CHANGELOG.md. The release it publishes runs release-to-lichess.yml, which
+# deploys it to the bot.
 
 on:
   push:

@@ -36,10 +36,17 @@ process may hold a token at a time.
 - The `greeting` lines must fit 140 characters with a 9-character version in
   place of `__VERSION__`; `npm test` checks.
 - A UCI option set under `engine.uci_options` must be one the engine
-  advertises; `./run.sh --check` checks against the latest release.
-- Merging a change does not deploy it. Until the deployment moves here, the
-  deployed bot reads the engine repository's copy of the config; see
+  advertises; `./run.sh --check` checks against the pinned release.
+- Merging a change does not deploy it; the next release does. See
   [The deployed bot](README.md#the-deployed-bot).
+
+## Moving to a new engine release
+
+1. Check it: `BRAVEHEART_VERSION=v0.55.0 ./run.sh --check`.
+2. Change `container-image.artifact.version` in `jwall-engineering-sites.yaml`
+   in a `feat` pull request that says what the release changes (link its release
+   notes) and quotes the check.
+3. After it merges, merging the Release Please PR deploys it.
 
 ## Commit messages
 
@@ -80,7 +87,8 @@ Every change reaches `main` through a pull request. Nobody pushes to `main`.
 
 [Release Please](https://github.com/googleapis/release-please) keeps a release
 pull request open with the next version and the changelog. Merging it tags the
-version; it deploys nothing. It owns `CHANGELOG.md`; nobody edits that file by hand.
+version and deploys it to the bot (`release-to-lichess.yml`). It owns
+`CHANGELOG.md`; nobody edits that file by hand.
 
 The release pull request is authored by the `braveheart-chess-release-bot`
 GitHub App, the organisation's release bot, so CI runs on it. The workflow

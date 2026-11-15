@@ -5,10 +5,12 @@
 #   LICHESS_TOKEN=lip_... ./run.sh --upgrade  # one-time: turn a fresh account into a bot
 #   ./run.sh --check                          # set everything up and validate it; never contacts Lichess
 #
-# The engine is the latest Braveheart release for this machine, verified
-# against its published checksum. To play something else:
+# The engine is the release the deployed bot plays (container-image.artifact.version
+# in jwall-engineering-sites.yaml), for this machine, verified against its
+# published checksum. To play something else:
 #
-#   BRAVEHEART_VERSION=v0.54.0 ./run.sh                          # a given release
+#   BRAVEHEART_VERSION=v0.55.0 ./run.sh                          # another release
+#   BRAVEHEART_VERSION=latest ./run.sh                           # the newest release
 #   BRAVEHEART_BIN=../braveheart/target/release/braveheart ./run.sh  # a local build
 #
 # Needs: a Lichess account that has never played a game, with an API token
@@ -80,6 +82,10 @@ else
 
   tag="${BRAVEHEART_VERSION:-}"
   if [ -z "$tag" ]; then
+    # The pin: the only `version: vX.Y.Z` in the project file.
+    tag="$(sed -n 's/^ *version: *\(v[0-9][0-9.]*\).*$/\1/p' "$here/jwall-engineering-sites.yaml")"
+    [ -n "$tag" ] || die "jwall-engineering-sites.yaml pins no engine release (container-image.artifact.version)"
+  elif [ "$tag" = "latest" ]; then
     # releases/latest redirects to releases/tag/<tag>: no API call, so no rate limit.
     latest="$(curl -fsSLI -o /dev/null -w '%{url_effective}' "$ENGINE_REPO/releases/latest")"
     tag="${latest##*/}"

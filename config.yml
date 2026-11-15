@@ -1,0 +1,124 @@
+# lichess-bot configuration for Braveheart. run.sh copies it next to the
+# lichess-bot checkout, filling in the token from the LICHESS_TOKEN environment
+# variable and the engine's version. Everything else lives here, versioned.
+
+token: "LICHESS_TOKEN_PLACEHOLDER"
+url: "https://lichess.org/"
+
+engine:
+  dir: "./engines/"
+  name: "braveheart"
+  working_dir: ""
+  protocol: "uci"
+  ponder: true                     # think on the opponent's clock (go ponder / ponderhit)
+  polyglot:
+    enabled: false
+  draw_or_resign:
+    resign_enabled: false          # play on; the evaluation is still coarse
+    offer_draw_enabled: true
+    offer_draw_score: 0
+    offer_draw_for_egtb_zero: false
+    offer_draw_moves: 10
+    offer_draw_pieces: 10
+  # The bot's opening book is Lichess's opening explorer, queried by
+  # lichess-bot: the engine itself stays book-agnostic (UCI engines leave books
+  # to the GUI), so SPRTs, the ladder and CCRL testers see the bare engine.
+  # Masters games only, the best-scoring move for the side to move among those
+  # played at least 50 times; the book ends where the masters data thins out,
+  # and after 10 positions without a book move the bot stops asking.
+  online_moves:
+    max_out_of_book_moves: 10
+    max_retries: 2
+    lichess_opening_explorer:
+      enabled: true
+      min_time: 20                 # seconds left; below this the engine plays, no network round trip
+      max_time: 10800              # every time control the bot accepts
+      source: "masters"
+      player_name: ""
+      sort: "winrate"
+      min_games: 50                # ignore thin lines whose winrate is noise
+    chessdb_book:
+      enabled: false
+    lichess_cloud_analysis:
+      enabled: false
+    online_egtb:
+      enabled: false
+  lichess_bot_tbs:
+    syzygy:
+      enabled: false
+    gaviota:
+      enabled: false
+  uci_options:
+    Hash: 128
+    Move Overhead: 300          # engine-side latency allowance, on top of move_overhead below
+  silence_stderr: false
+
+abort_time: 30
+fake_think_time: false
+rate_limiting_delay: 0
+move_overhead: 1500              # ms kept back from the clock for network latency
+max_takebacks_accepted: 0
+quit_after_all_games_finish: false
+
+correspondence:
+  move_time: 60
+  checkin_period: 600
+  disconnect_time: 300
+  ponder: false
+
+challenge:
+  concurrency: 1
+  sort_by: "best"
+  preference: "none"
+  accept_bot: true
+  only_bot: false
+  max_increment: 20
+  min_increment: 0
+  max_base: 1800
+  min_base: 0
+  max_days: 14
+  min_days: 1
+  variants:
+    - standard
+  time_controls:
+    - bullet
+    - blitz
+    - rapid
+  modes:
+    - casual
+    - rated
+  bullet_requires_increment: false
+  max_simultaneous_games_per_user: 1
+
+# Chat messages. __VERSION__ is filled in by run.sh (and by the deployed bot's
+# entrypoint) from `braveheart --version`, so a game's chat says which release
+# is playing; lichess-bot itself only substitutes {me} and {opponent}. Lichess
+# caps a chat message at 140 characters and lichess-bot drops a longer one
+# without sending it, so each line below must fit with a version up to 9
+# characters long (`npm test` checks).
+greeting:
+  hello: "Hi! I'm Braveheart __VERSION__: from-scratch Rust alpha-beta + NNUE, trained on billions of my own self-play positions, all labelled by me."
+  goodbye: "Thanks for the game! Source and story: github.com/Braveheart-Chess/braveheart"
+  hello_spectators: "Braveheart __VERSION__ here: from-scratch Rust alpha-beta + NNUE, trained on billions of its own self-play positions, all self-labelled."
+  goodbye_spectators: "Thanks for watching! Source and story: github.com/Braveheart-Chess/braveheart"
+
+pgn_directory: "game_records"
+pgn_file_grouping: "game"
+
+matchmaking:
+  allow_matchmaking: false       # set true to have the bot challenge other bots while idle
+  allow_during_games: false
+  challenge_variant: "standard"
+  challenge_timeout: 30
+  challenge_initial_time:
+    - 180
+    - 300
+  challenge_increment:
+    - 2
+    - 3
+  challenge_days:
+    - 1
+  opponent_rating_difference: 300
+  rating_preference: "none"
+  challenge_mode: "random"
+  challenge_filter: none

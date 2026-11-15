@@ -5,7 +5,8 @@
   "description": "Tooling for commit message linting and the config tests. The bot itself is lichess-bot and the Braveheart engine; see README.md.",
   "type": "module",
   "scripts": {
-    "commitlint": "commitlint"
+    "commitlint": "commitlint",
+    "test": "node --test \"tests/*.test.mjs\""
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",

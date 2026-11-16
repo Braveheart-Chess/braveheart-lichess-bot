@@ -54,3 +54,11 @@ components:
       s3: true                      # sync game_records/ to s3://jwall-engineering-braveheart-bot-records/records/
     logs:
       retention_days: 30
+    # Running hours, UTC: started at 08:00; at 20:00 the bot stops taking
+    # challenges, finishes its game, ships its records and powers off (hard
+    # stop at 21:00). About half the instance's cost. `bot start` / `bot stop`
+    # run it by hand outside these hours.
+    schedule:
+      days: daily
+      start: "08:00"
+      stop: "20:00"

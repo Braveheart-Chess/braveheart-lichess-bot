@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/Braveheart-Chess/braveheart-lichess-bot/compare/v0.1.0...v0.2.0) (2026-11-16)
+
+
+### Features
+
+* run the bot from 08:00 to 20:00 UTC every day ([#10](https://github.com/Braveheart-Chess/braveheart-lichess-bot/issues/10)) ([2d2ee2e](https://github.com/Braveheart-Chess/braveheart-lichess-bot/commit/2d2ee2ef96225391403802b19c428d71e0b6a506))
+
 ## 0.1.0 (2026-11-15)
 
 

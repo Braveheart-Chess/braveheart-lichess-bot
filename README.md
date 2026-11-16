@@ -133,9 +133,10 @@ numbers do not.
 
 ## The deployed bot
 
-`run.sh` plays only while it is running. The always-on bot,
-[jwallace145](https://lichess.org/@/jwallace145), is one `c8a.medium` EC2
-instance run by
+`run.sh` plays only while it is running. The deployed bot,
+[jwallace145](https://lichess.org/@/jwallace145), plays from 08:00 to 20:00 UTC
+every day (`lichess-bot.schedule`; outside those hours it is offline). It is one
+`c8a.medium` EC2 instance run by
 [jwall-engineering-infra](https://github.com/jwallace145/jwall-engineering-infra)
 from this repository's [`jwall-engineering-sites.yaml`](jwall-engineering-sites.yaml),
 project `braveheart-bot` (the tool's

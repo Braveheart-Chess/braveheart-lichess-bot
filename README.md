@@ -176,7 +176,7 @@ A release that changes neither the pin nor the config deploys nothing.
 | Hash size and move overhead | `engine.hash_mb` and `engine.move_overhead_ms` in the project file, which override `config.yml`'s `uci_options` |
 | lichess-bot's own version | jaws's image, pinned to the same commit as `LICHESS_BOT_REF` in `run.sh` |
 | Instance type, records, logs | The project file. Changing the instance replaces it, so that change also needs a Bot apply in jaws, run while the bot is idle |
-| Token | SSM `/jwall-engineering/braveheart-bot/lichess-token`, never in a file |
+| Token | SSM `/<organization>/braveheart-bot/lichess-token` in the account the bot runs in (`jwall-engineering` in management, `jaws` in production), never in a file |
 
 Every finished game is shipped to
 `s3://jwall-engineering-braveheart-bot-records/records/`, filed under the

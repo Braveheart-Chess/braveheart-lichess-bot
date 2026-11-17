@@ -20,7 +20,7 @@ engine; everything that connects it to Lichess lives here.
 | File | What it is |
 | --- | --- |
 | [`config.yml`](config.yml) | The lichess-bot configuration: challenges accepted, the opening book, pondering, the engine's options, the chat greetings |
-| [`jwall-engineering-sites.yaml`](jwall-engineering-sites.yaml) | The deployed bot: the engine release it plays (the pin), its instance, token, records and logs |
+| [`jaws.yaml`](jaws.yaml) | The deployed bot: the engine release it plays (the pin), its instance, token, records and logs |
 | [`.github/workflows/release-to-lichess.yml`](.github/workflows/release-to-lichess.yml) | Deploys each release of this repository to the bot |
 | [`run.sh`](run.sh) | Sets up lichess-bot and the engine under `.lichess-bot/` and plays |
 | [`tools/check-config.py`](tools/check-config.py) | What `run.sh --check` runs: lichess-bot's own validation of the config, and the engine's UCI options |
@@ -71,7 +71,7 @@ binaries, and `run.sh` takes one of them.
 
 | Setting | Engine |
 | --- | --- |
-| none | The pinned release, `container-image.artifact.version` in `jwall-engineering-sites.yaml` |
+| none | The pinned release, `container-image.artifact.version` in `jaws.yaml` |
 | `BRAVEHEART_VERSION=v0.55.0` | That release, for example one you are about to pin |
 | `BRAVEHEART_VERSION=latest` | The newest release |
 | `BRAVEHEART_BIN=/path/to/braveheart` | A binary you built, for example `../braveheart/target/release/braveheart` |
@@ -107,7 +107,7 @@ it is running and what it is, for example:
 The goodbye carries the engine repository's link. The texts are the `greeting`
 block of `config.yml`; `run.sh` fills `__VERSION__` from `braveheart --version`
 when it writes the config, and the deployed bot's entrypoint
-(jwall-engineering-infra) does the same substitution. Lichess caps a chat
+(jaws) does the same substitution. Lichess caps a chat
 message at 140 characters and lichess-bot silently drops a longer one, so
 `npm test` checks every greeting with a 9-character version filled in. Anyone
 in the chat can also type `!name`, which lichess-bot answers with the engine's
@@ -145,10 +145,10 @@ numbers do not.
 [jwallace145](https://lichess.org/@/jwallace145), plays from 08:00 to 20:00 UTC
 every day (`lichess-bot.schedule`; outside those hours it is offline). It is one
 `c8a.medium` EC2 instance run by
-[jwall-engineering-infra](https://github.com/jwallace145/jwall-engineering-infra)
-from this repository's [`jwall-engineering-sites.yaml`](jwall-engineering-sites.yaml),
+[jaws](https://github.com/jwallace145/jaws)
+from this repository's [`jaws.yaml`](jaws.yaml),
 project `braveheart-bot` (the tool's
-[docs/lichess-bot.md](https://github.com/jwallace145/jwall-engineering-infra/blob/main/docs/lichess-bot.md)).
+[docs/lichess-bot.md](https://github.com/jwallace145/jaws/blob/main/docs/lichess-bot.md)).
 This repository owns the deployment: the engine repository has no workflow,
 file or role for the bot.
 
@@ -174,8 +174,8 @@ A release that changes neither the pin nor the config deploys nothing.
 | Engine release | `container-image.artifact.version` |
 | lichess-bot settings | `config.yml`; the entrypoint fills `__VERSION__` with the pinned release |
 | Hash size and move overhead | `engine.hash_mb` and `engine.move_overhead_ms` in the project file, which override `config.yml`'s `uci_options` |
-| lichess-bot's own version | jwall-engineering-infra's image, pinned to the same commit as `LICHESS_BOT_REF` in `run.sh` |
-| Instance type, records, logs | The project file. Changing the instance replaces it, so that change also needs a Bot apply in jwall-engineering-infra, run while the bot is idle |
+| lichess-bot's own version | jaws's image, pinned to the same commit as `LICHESS_BOT_REF` in `run.sh` |
+| Instance type, records, logs | The project file. Changing the instance replaces it, so that change also needs a Bot apply in jaws, run while the bot is idle |
 | Token | SSM `/jwall-engineering/braveheart-bot/lichess-token`, never in a file |
 
 Every finished game is shipped to
@@ -184,11 +184,11 @@ image tag that played it (`engine=v0.54.0-3f9c2a1b`). Games from before the
 bot moved here are in `jwall-engineering-braveheart-records`.
 
 To see what is running, from a shell with the AWS credentials, in a checkout of
-jwall-engineering-infra:
+jaws:
 
 ```sh
-JES_SKIP_ROLE_CHECK=1 uv run jwall-engineering-sites --config config.yaml \
-  bot status   # run next to this repository's jwall-engineering-sites.yaml
+JAWS_SKIP_ROLE_CHECK=1 uv run jaws --config config.yaml \
+  bot status   # run next to this repository's jaws.yaml
 ```
 
 ## Rating

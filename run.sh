@@ -6,7 +6,7 @@
 #   ./run.sh --check                          # set everything up and validate it; never contacts Lichess
 #
 # The engine is the release the deployed bot plays (container-image.artifact.version
-# in jwall-engineering-sites.yaml), for this machine, verified against its
+# in jaws.yaml), for this machine, verified against its
 # published checksum. To play something else:
 #
 #   BRAVEHEART_VERSION=v0.55.0 ./run.sh                          # another release
@@ -83,8 +83,8 @@ else
   tag="${BRAVEHEART_VERSION:-}"
   if [ -z "$tag" ]; then
     # The pin: the only `version: vX.Y.Z` in the project file.
-    tag="$(sed -n 's/^ *version: *\(v[0-9][0-9.]*\).*$/\1/p' "$here/jwall-engineering-sites.yaml")"
-    [ -n "$tag" ] || die "jwall-engineering-sites.yaml pins no engine release (container-image.artifact.version)"
+    tag="$(sed -n 's/^ *version: *\(v[0-9][0-9.]*\).*$/\1/p' "$here/jaws.yaml")"
+    [ -n "$tag" ] || die "jaws.yaml pins no engine release (container-image.artifact.version)"
   elif [ "$tag" = "latest" ]; then
     # releases/latest redirects to releases/tag/<tag>: no API call, so no rate limit.
     latest="$(curl -fsSLI -o /dev/null -w '%{url_effective}' "$ENGINE_REPO/releases/latest")"

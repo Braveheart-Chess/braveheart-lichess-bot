@@ -58,5 +58,5 @@ shellcheck run.sh
 
 Repository settings and secrets, the release bot, the Lichess account and its
 token, merging the Release Please PR, and anything else that touches the
-deployed bot (jwall-engineering-infra's Bot apply, its secrets, its instance).
+deployed bot (jaws's Bot apply, its secrets, its instance).
 List them in the PR instead of attempting them.

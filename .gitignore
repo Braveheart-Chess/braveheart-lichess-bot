@@ -11,5 +11,5 @@ secrets.sh
 
 .DS_Store
 
-# jwall-engineering-sites run logs and artifacts
-.jwall-engineering-sites/
+# jaws run logs and artifacts
+.jaws/

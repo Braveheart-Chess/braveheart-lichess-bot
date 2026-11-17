@@ -43,7 +43,7 @@ process may hold a token at a time.
 ## Moving to a new engine release
 
 1. Check it: `BRAVEHEART_VERSION=v0.55.0 ./run.sh --check`.
-2. Change `container-image.artifact.version` in `jwall-engineering-sites.yaml`
+2. Change `container-image.artifact.version` in `jaws.yaml`
    in a `feat` pull request that says what the release changes (link its release
    notes) and quotes the check.
 3. After it merges, merging the Release Please PR deploys it.

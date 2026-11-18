@@ -7,12 +7,11 @@ version: 1
 project: braveheart-bot
 repository: Braveheart-Chess/braveheart-lichess-bot
 
-# The tags every resource carries (through the provider's default_tags).
-# Organization and ManagedBy are the account's, which the tool sets (jaws in
-# production), whatever this file states.
+# The tags every resource carries (through the provider's default_tags), plus
+# ManagedBy, which the tool adds. The bot runs in jaws's production account.
 # Project, Repository and Environment=prod are cross-checked.
 tags:
-  Organization: jwall-engineering
+  Organization: jaws
   Project: braveheart-bot
   Environment: prod
   Repository: Braveheart-Chess/braveheart-lichess-bot
@@ -52,7 +51,7 @@ components:
       hash_mb: 256                  # UCI Hash; c8a.medium has 2 GiB
       move_overhead_ms: 500         # UCI Move Overhead (lichess-bot's own move_overhead stays in config.yml)
     records:
-      s3: true                      # sync game_records/ to s3://<organization>-braveheart-bot-records/records/
+      s3: true                      # sync game_records/ to s3://jaws-braveheart-bot-records/records/
     logs:
       retention_days: 30
     # Running hours, UTC: started at 08:00; at 20:00 the bot stops taking

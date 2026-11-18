@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/Braveheart-Chess/braveheart-lichess-bot/compare/v0.2.0...v0.2.1) (2026-11-18)
+
+
+### Documentation
+
+* open the readme with the organisation banner ([#12](https://github.com/Braveheart-Chess/braveheart-lichess-bot/issues/12)) ([62ea833](https://github.com/Braveheart-Chess/braveheart-lichess-bot/commit/62ea833cc939902d5f1b4119ea95892efbbe2c22))
+
 ## [0.2.0](https://github.com/Braveheart-Chess/braveheart-lichess-bot/compare/v0.1.0...v0.2.0) (2026-11-16)
 
 

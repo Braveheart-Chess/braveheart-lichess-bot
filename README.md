@@ -178,13 +178,14 @@ A release that changes neither the pin nor the config deploys nothing.
 | Instance type, records, logs | The project file. Changing the instance replaces it, so that change also needs a Bot apply in jaws, run while the bot is idle |
 | Token | SSM `/<organization>/braveheart-bot/lichess-token` in the account the bot runs in (`jwall-engineering` in management, `jaws` in production), never in a file |
 
-Every finished game is shipped to
-`s3://jwall-engineering-braveheart-bot-records/records/`, filed under the
-image tag that played it (`engine=v0.54.0-3f9c2a1b`). Games from before the
-bot moved here are in `jwall-engineering-braveheart-records`.
+Every finished game is shipped to the records bucket of the account the bot
+runs in, `s3://jaws-braveheart-bot-records/records/` in production, filed under
+the image tag that played it (`engine=v0.54.0-3f9c2a1b`). Games from before the
+bot moved to this repository are in `jwall-engineering-braveheart-records`, in
+the management account.
 
-To see what is running, from a shell with the AWS credentials, in a checkout of
-jaws:
+To see what is running, from a shell with the production account's AWS
+credentials, in a checkout of jaws:
 
 ```sh
 JAWS_SKIP_ROLE_CHECK=1 uv run jaws --config config.yaml \

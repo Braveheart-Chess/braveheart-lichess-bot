@@ -180,8 +180,9 @@ A release that changes neither the pin nor the config deploys nothing.
 
 Every finished game is shipped to `s3://jaws-braveheart-bot-records/records/`,
 filed under the image tag that played it (`engine=v0.54.0-3f9c2a1b`). Games
-from before the bot moved to this repository are in
-`jwall-engineering-braveheart-records`, in jaws's management account.
+from before the bot moved to this repository are there too, under the same
+keys: they were copied from jaws's old `jwall-engineering-braveheart-records`
+bucket on 2026-11-21, before it was deleted.
 
 To see what is running, from a shell with the production account's AWS
 credentials, in a checkout of jaws:

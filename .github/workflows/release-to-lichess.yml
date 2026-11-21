@@ -15,7 +15,7 @@ name: Release to Lichess
 # It runs on the release event, not as a job of release-please.yml, because the
 # release role trusts only this repository's v* tags, and a push to main is
 # not a tag. Re-run a failed run from the Actions tab once the cause is fixed.
-# The infrastructure: https://github.com/jwallace145/jaws/blob/main/docs/lichess-bot.md
+# The infrastructure: https://github.com/Jaws-Platform/jaws/blob/main/docs/lichess-bot.md
 
 on:
   release:
@@ -25,7 +25,7 @@ permissions: {}
 
 jobs:
   release:
-    uses: jwallace145/jaws/.github/workflows/container-release.yml@v0.52.0
+    uses: Jaws-Platform/jaws/.github/workflows/container-release.yml@v0.52.0
     with:
       project: braveheart-bot
     permissions:

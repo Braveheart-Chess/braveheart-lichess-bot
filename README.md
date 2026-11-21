@@ -145,10 +145,10 @@ numbers do not.
 [jwallace145](https://lichess.org/@/jwallace145), plays from 08:00 to 20:00 UTC
 every day (`lichess-bot.schedule`; outside those hours it is offline). It is one
 `c8a.medium` EC2 instance run by
-[jaws](https://github.com/jwallace145/jaws)
+[jaws](https://github.com/Jaws-Platform/jaws)
 from this repository's [`jaws.yaml`](jaws.yaml),
 project `braveheart-bot` (the tool's
-[docs/lichess-bot.md](https://github.com/jwallace145/jaws/blob/main/docs/lichess-bot.md)).
+[docs/lichess-bot.md](https://github.com/Jaws-Platform/jaws/blob/main/docs/lichess-bot.md)).
 This repository owns the deployment: the engine repository has no workflow,
 file or role for the bot.
 

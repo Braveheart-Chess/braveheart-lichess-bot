@@ -8,10 +8,10 @@ project: braveheart-bot
 repository: Braveheart-Chess/braveheart-lichess-bot
 
 # The tags every resource carries (through the provider's default_tags), plus
-# ManagedBy, which the tool adds. The bot runs in jaws's production account.
-# Project, Repository and Environment=prod are cross-checked.
+# Organization (this repository's GitHub owner) and ManagedBy, which the tool
+# adds. The bot runs in jaws's production account. Project, Repository and
+# Environment=prod are cross-checked.
 tags:
-  Organization: jaws
   Project: braveheart-bot
   Environment: prod
   Repository: Braveheart-Chess/braveheart-lichess-bot

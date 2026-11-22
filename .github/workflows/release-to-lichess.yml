@@ -25,7 +25,7 @@ permissions: {}
 
 jobs:
   release:
-    uses: Jaws-Platform/jaws/.github/workflows/container-release.yml@v0.73.0
+    uses: Jaws-Platform/jaws/.github/workflows/container-release.yml@v0.76.0
     with:
       project: braveheart-bot
     permissions:

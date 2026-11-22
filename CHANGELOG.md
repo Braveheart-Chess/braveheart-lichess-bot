@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/Braveheart-Chess/braveheart-lichess-bot/compare/v0.2.1...v0.2.2) (2026-11-22)
+
+
+### Bug Fixes
+
+* **repo:** let dependabot's capitalised bump titles pass ([#23](https://github.com/Braveheart-Chess/braveheart-lichess-bot/issues/23)) ([26c5a8f](https://github.com/Braveheart-Chess/braveheart-lichess-bot/commit/26c5a8fe33910b1d661c82e1dfdbd57a4bd269ed))
+
 ## [0.2.1](https://github.com/Braveheart-Chess/braveheart-lichess-bot/compare/v0.2.0...v0.2.1) (2026-11-18)
 
 
